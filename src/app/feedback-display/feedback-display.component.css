@@ -1,0 +1,22 @@
+.feedback-message {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  .feedback-message p {
+    margin: 0;
+  }
+  
+  /* on peut ajouter du style pour les messages corrects / incorrects */
+  .correct {
+    color: #3c763d; /* green */
+    background-color: #dff0d8;
+  }
+  
+  .incorrect {
+    color: #a94442; /* red */
+    background-color: #f2dede;
+  }
+  

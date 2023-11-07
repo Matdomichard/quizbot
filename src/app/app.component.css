@@ -1,0 +1,26 @@
+/* app.component.css */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+    padding: 20px;
+  }
+  
+  app-smiley-image {
+    margin: 20px 0;
+  }
+  
+  app-subject-selector,
+  app-question-display,
+  app-answer-input,
+  app-feedback-display {
+    width: 100%;
+    max-width: 600px; 
+    margin-bottom: 20px;
+  }
+  
+  

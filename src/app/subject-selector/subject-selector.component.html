@@ -1,0 +1,7 @@
+<div class="subject-selector">
+    <label for="subject-select">Choose a subject:</label>
+    <select (change)="onSubjectChange($event.target)">
+      <option *ngFor="let subject of subjects" [value]="subject">{{ subject }}</option>
+    </select>
+  </div>
+  
