@@ -1,5 +1,5 @@
 // question-display.component.ts
-import { Component, Input } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-question-display',
@@ -8,6 +8,11 @@ import { Component, Input } from '@angular/core';
 })
 export class QuestionDisplayComponent {
   @Input() question!: any; 
+  @Output() nextQuestion = new EventEmitter<void>();
 
+  onNextQuestion(): void {
+    // On emet l'événement lorsque le bouton est cliqué
+    this.nextQuestion.emit();
+  }
   constructor() { }
 }

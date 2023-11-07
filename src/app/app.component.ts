@@ -7,7 +7,8 @@ import { QuestionManagementService } from './question-management.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  currentQuestion: any; // Remplacer par le type approprié
+  currentTopic: string = 'Entretien Java Facile';
+  currentQuestion!: String; 
   feedbackMessage: string | null = null;
 
   constructor(private questionService: QuestionManagementService) {}
@@ -17,14 +18,25 @@ export class AppComponent implements OnInit {
     this.onSubjectSelected('Entretien Java Facile'); // Exemple avec 'java' comme sujet par défaut
   }
 
-  onSubjectSelected(topic: string) {
-    this.questionService.getQuestionsForTopic(topic, 'java').subscribe(questions => {
-      if (questions.length > 0) {
-      this.currentQuestion = questions.length > 0 ? questions[0] : null;
+  onSubjectSelected(currentTopic: string) {
+    this.questionService.getFirstQuestion(currentTopic).subscribe((question: any) => {
+      if (question && question.question) {
+        this.currentQuestion = question.question;
       } else {
-      // Gérer le cas où il n'y a pas de questions
-      this.currentQuestion = "Pas de questions disponibles.";
-    }
+        this.currentQuestion = "Pas de questions disponibles.";
+      }
+    });
+  }
+
+  onNextQuestionClicked(questionId: string): void {
+    // Appelez la méthode pour charger la question suivante
+    // Cela peut être une méthode dans votre service ou une logique directement dans ce composant
+    this.questionService.getNextQuestion(this.currentTopic).subscribe((question: any) => {
+      if (question && question.question) {
+        this.currentQuestion = question.question;
+      } else {
+        this.currentQuestion = "Pas de questions disponibles.";
+      }
     });
   }
 

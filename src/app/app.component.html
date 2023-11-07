@@ -8,7 +8,7 @@
   <app-subject-selector (subjectSelected)="onSubjectSelected($event)"></app-subject-selector>
   
   <!-- Question Display Component -->
-  <app-question-display *ngIf="currentQuestion" [question]="currentQuestion"></app-question-display>
+  <app-question-display *ngIf="currentQuestion" [question]="currentQuestion" (nextQuestion)="onNextQuestionClicked"></app-question-display>
   
   <!-- Answer Input Component -->
   <app-answer-input *ngIf="currentQuestion" (answerSubmitted)="onAnswerSubmitted($event)"></app-answer-input>
