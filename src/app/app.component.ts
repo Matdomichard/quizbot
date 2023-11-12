@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { QuestionManagementService } from './question-management.service'; 
 import { EvaluationService } from './evaluation.service';
 import { Question } from './models/question.model';
+import { environment } from '../environments/environment';
+
 
 @Component({
   selector: 'app-root',
@@ -9,6 +11,7 @@ import { Question } from './models/question.model';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  firebaseConfig = environment.firebaseConfig;
   currentTopic: string = 'Entretien Java Facile';
   currentQuestion!: Question; 
   isCorrect: boolean | null = null;
