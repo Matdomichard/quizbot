@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { QuestionManagementService } from './question-management.service'; 
 import { EvaluationService } from './evaluation.service';
 import { Question } from './models/question.model';
-import { environment } from '../environments/environment.prod';
+import { environment } from '../environments/environment';
 
 
 @Component({
