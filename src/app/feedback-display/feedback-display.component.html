@@ -1,9 +1,9 @@
+<!-- feedback-display.component.html -->
 <div *ngIf="isCorrect !== null" class="feedback-message">
-    <p *ngIf="isCorrect; else wrongAnswer">
-      Correct! {{ message }}
-    </p>
-    <ng-template #wrongAnswer>
-      <p>Incorrect. {{ message }}</p>
-    </ng-template>
-  </div>
-  
+  <p *ngIf="isCorrect; else wrongAnswer">
+    {{ message }}
+  </p>
+  <ng-template #wrongAnswer>
+    <p>{{ message }}</p>
+  </ng-template>
+</div>

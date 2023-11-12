@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { QuestionManagementService } from './question-management.service'; 
+import { EvaluationService } from './evaluation.service';
+import { Question } from './models/question.model';
 
 @Component({
   selector: 'app-root',
@@ -8,39 +10,50 @@ import { QuestionManagementService } from './question-management.service';
 })
 export class AppComponent implements OnInit {
   currentTopic: string = 'Entretien Java Facile';
-  currentQuestion!: String; 
+  currentQuestion!: Question; 
+  isCorrect: boolean | null = null;
   feedbackMessage: string | null = null;
 
-  constructor(private questionService: QuestionManagementService) {}
+  constructor(
+    private questionService: QuestionManagementService,
+    private evaluationService: EvaluationService
+  ) {}
 
   ngOnInit() {
-    // Ici, on initialiseune catégorie et un sujet par défaut si vous le souhaitez
-    this.onSubjectSelected('Entretien Java Facile'); // Exemple avec 'java' comme sujet par défaut
+    this.onSubjectSelected(this.currentTopic);
   }
 
   onSubjectSelected(currentTopic: string) {
-    this.questionService.getFirstQuestion(currentTopic).subscribe((question: any) => {
-      if (question && question.question) {
-        this.currentQuestion = question.question;
+    this.questionService.getFirstQuestion(currentTopic).subscribe((question: Question | null) => {
+      if (question) {
+        this.currentQuestion = question;
       } else {
-        this.currentQuestion = "Pas de questions disponibles.";
+        this.feedbackMessage = "Pas de questions disponibles.";
       }
     });
   }
 
-  onNextQuestionClicked(questionId: string): void {
-    // Appelez la méthode pour charger la question suivante
-    // Cela peut être une méthode dans votre service ou une logique directement dans ce composant
-    this.questionService.getNextQuestion(this.currentTopic).subscribe((question: any) => {
-      if (question && question.question) {
-        this.currentQuestion = question.question;
+  onNextQuestionClicked() {
+    this.questionService.getNextQuestion(this.currentTopic).subscribe((question: Question | null) => {
+      if (question) {
+        this.currentQuestion = question;
+        this.isCorrect = null; // Réinitialiser l'état de la réponse
+        this.feedbackMessage = null;
       } else {
-        this.currentQuestion = "Pas de questions disponibles.";
+        this.feedbackMessage = "Pas de questions disponibles.";
       }
     });
   }
 
   onAnswerSubmitted(answer: string) {
-    // Logique pour vérifier la réponse et mettre à jour feedbackMessage
+    if (this.currentQuestion) {
+      this.evaluationService.evaluateAnswer(answer, this.currentQuestion).subscribe(evaluationResult => {
+        this.isCorrect = evaluationResult.isCorrect;
+        this.feedbackMessage = this.isCorrect ? "Votre réponse est correcte!" : `Incorrect. La bonne réponse est : ${evaluationResult.correctAnswer}`;
+      });
+    } else {
+      console.error("Question actuelle non disponible.");
+      this.feedbackMessage = "Erreur : Question non disponible.";
+    }
   }
 }

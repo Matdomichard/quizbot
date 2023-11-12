@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { Question } from './models/question.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,51 +12,50 @@ export class QuestionManagementService {
 
   constructor(private firestore: AngularFirestore) {}
 
-  getFirstQuestion(topic: string): Observable<any> {
-    return this.firestore.collection(`categories/${topic}/topics/java/questions`, ref => ref.limit(1))
+  getFirstQuestion(topic: string): Observable<Question | null> {
+    return this.firestore.collection(`categories/${topic}/questions`, ref => ref.limit(1))
       .snapshotChanges()
       .pipe(
         map(actions => {
-          console.log(actions);
           if (actions.length > 0) {
-            const data = actions[0].payload.doc.data() as any;
-            const id = actions[0].payload.doc.id;
-            this.lastVisible = actions[0].payload.doc; // Stocke le dernier document visible pour la pagination
-            return { id, ...data };
+            const data = actions[0].payload.doc.data() as Question;
+            this.lastVisible = actions[0].payload.doc;
+            return data; 
           } else {
-            return null; // Aucune question disponible
+            return null;
           }
         }),
         catchError(error => {
           console.error('Error fetching first question:', error);
-          return of(null); // Renvoie null en cas d'erreur
+          return of(null);
         })
       );
   }
 
-  getNextQuestion(topic: string): Observable<any> {
+  getNextQuestion(topic: string): Observable<Question | null> {
     if (!this.lastVisible) {
-      return this.getFirstQuestion(topic); // Si lastVisible n'est pas défini, récupère la première question
+      console.error("Last visible not set");
+      return this.getFirstQuestion(topic);
     }
-
-    return this.firestore.collection(`categories/${topic}/topics/java/questions`, ref => ref.startAfter(this.lastVisible).limit(1))
+  
+    return this.firestore.collection(`categories/${topic}/questions`, ref => ref.startAfter(this.lastVisible).limit(1))
       .snapshotChanges()
       .pipe(
         map(actions => {
           if (actions.length > 0) {
-            const data = actions[0].payload.doc.data() as any;
-            const id = actions[0].payload.doc.id;
-            this.lastVisible = actions[0].payload.doc; // Met à jour le dernier document visible pour la pagination
-            return { id, ...data };
+            const data = actions[0].payload.doc.data() as Question;
+            this.lastVisible = actions[0].payload.doc;
+            return data; // Retourne directement data qui contient déjà un id
           } else {
-            this.lastVisible = null; // Réinitialise lastVisible si aucune question suivante n'est disponible
-            return null; // Aucune question suivante disponible
+            this.lastVisible = null;
+            return null;
           }
         }),
         catchError(error => {
           console.error('Error fetching next question:', error);
-          return of(null); // Renvoie null en cas d'erreur
+          return of(null);
         })
       );
   }
+  
 }
