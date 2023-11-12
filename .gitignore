@@ -42,5 +42,6 @@ testem.log
 Thumbs.db
 
 environment.ts
+environment.development.ts
 environment.prod.ts
 .vscode/settings.json

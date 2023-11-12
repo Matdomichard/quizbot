@@ -4,15 +4,17 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
-  flex-direction: column; /* Change la direction pour les petits écrans */
+  flex-direction: column;
 }
 
 input[type="text"] {
-  padding: 15px; /* Ajusté pour mieux s'adapter à une plus grande taille de police */
+  padding: 20px 10px; /* Réduit le padding gauche et droit */
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 100%;
-  font-size: 18px; /* Taille de police plus grande */
+  width: 100%; /* Pleine largeur sur les petits écrans */
+  font-size: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  min-height: 50px; /* Hauteur minimale pour agrandissement vertical */
 }
 
 button {
@@ -30,11 +32,9 @@ button:hover {
 }
 
 @media (min-width: 768px) {
-  .answer-input-container {
-      flex-direction: row; /* Sur les écrans plus larges, affichez les éléments en ligne */
-  }
-
-  input[type="text"], button {
-      width: auto; /* Réinitialiser la largeur pour les écrans plus larges */
+  input[type="text"] {
+    width: 100%; /* Ajustez la largeur selon les besoins */
+    min-height: 100px; /* Hauteur plus grande pour les écrans plus larges */
+    margin: 0 auto;
   }
 }
