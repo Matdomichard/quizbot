@@ -1,6 +1,6 @@
 .subject-selector {
     /* Add your styles here */
-    select {
+    :is(select) {
       padding: 8px;
       margin-top: 10px;
       border-radius: 4px;
