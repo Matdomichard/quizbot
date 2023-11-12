@@ -1,9 +1,14 @@
 /* smiley-image.component.css */
 img {
-    width: 500px; 
-    height: auto;
-    display: block; 
-    margin-left: auto;
-    margin-right: auto;
+  width: 500px;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 768px) {
+  img {
+      display: none;
   }
-  
+}

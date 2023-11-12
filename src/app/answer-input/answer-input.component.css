@@ -1,28 +1,40 @@
 /* answer-input.component.css */
 .answer-input-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px; /* space between input and button */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-direction: column; /* Change la direction pour les petits écrans */
+}
+
+input[type="text"] {
+  padding: 15px; /* Ajusté pour mieux s'adapter à une plus grande taille de police */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  font-size: 18px; /* Taille de police plus grande */
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+@media (min-width: 768px) {
+  .answer-input-container {
+      flex-direction: row; /* Sur les écrans plus larges, affichez les éléments en ligne */
   }
-  
-  input[type="text"] {
-    padding: 10px;
-    border: 1px solid #ccc; /* light grey border */
-    border-radius: 4px;
-    width: 100%; /* Full-width inputs */
+
+  input[type="text"], button {
+      width: auto; /* Réinitialiser la largeur pour les écrans plus larges */
   }
-  
-  button {
-    padding: 10px 20px;
-    background-color: #007bff; /* Bootstrap primary color */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-  }
-  
+}
