@@ -7,14 +7,16 @@
   flex-direction: column;
 }
 
-input[type="text"] {
-  padding: 20px 10px; /* Réduit le padding gauche et droit */
+textarea {
+  padding: 10px; /* Padding uniforme */
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 100%; /* Pleine largeur sur les petits écrans */
-  font-size: 20px;
+  width: 100%; /* Pleine largeur */
+  font-size: 16px; /* Taille de police ajustée */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   min-height: 50px; /* Hauteur minimale pour agrandissement vertical */
+  resize: vertical; /* Permet à l'utilisateur de redimensionner verticalement */
+  overflow: auto; /* Gère le défilement si le texte dépasse la hauteur */
 }
 
 button {
@@ -32,7 +34,7 @@ button:hover {
 }
 
 @media (min-width: 768px) {
-  input[type="text"] {
+  textarea {
     width: 100%; /* Ajustez la largeur selon les besoins */
     min-height: 100px; /* Hauteur plus grande pour les écrans plus larges */
     margin: 0 auto;

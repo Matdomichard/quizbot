@@ -1,6 +1,5 @@
 <!-- answer-input.component.html -->
 <div class="answer-input-container">
-    <input type="text" [(ngModel)]="userAnswer" placeholder="Entrez votre réponse" />
-    <button (click)="onSubmit()">Submit</button>
-  </div>
-  
+  <textarea #textarea [(ngModel)]="userAnswer" placeholder="Entrez votre réponse"></textarea>
+  <button (click)="onSubmit()">Submit</button>
+</div>

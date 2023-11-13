@@ -1,61 +1,50 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, take } from 'rxjs/operators';
 import { Question } from './models/question.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuestionManagementService {
-  private lastVisible: any; // Utilisé pour la pagination des données
+  private questions: Question[] = [];
+  private currentIndex = 0;
 
   constructor(private firestore: AngularFirestore) {}
 
   getFirstQuestion(topic: string): Observable<Question | null> {
-    return this.firestore.collection(`categories/${topic}/questions`, ref => ref.limit(1))
+    return this.firestore.collection(`categories/${topic}/questions`)
       .snapshotChanges()
       .pipe(
+        take(1),
         map(actions => {
-          if (actions.length > 0) {
-            const data = actions[0].payload.doc.data() as Question;
-            this.lastVisible = actions[0].payload.doc;
-            return data; 
-          } else {
-            return null;
-          }
+          const questions = actions.map(a => a.payload.doc.data() as Question);
+          this.questions = this.shuffleArray(questions);
+          this.currentIndex = 0;
+          return this.questions.length > 0 ? this.questions[this.currentIndex++] : null;
         }),
         catchError(error => {
-          console.error('Error fetching first question:', error);
+          console.error('Error fetching questions:', error);
           return of(null);
         })
       );
   }
 
-  getNextQuestion(topic: string): Observable<Question | null> {
-    if (!this.lastVisible) {
-      console.error("Last visible not set");
-      return this.getFirstQuestion(topic);
+  getNextQuestion(): Observable<Question | null> {
+    if (this.currentIndex < this.questions.length) {
+      return of(this.questions[this.currentIndex++]);
+    } else {
+      // Toutes les questions ont été servies, retourner null ou recommencer
+      return of(null);
     }
-  
-    return this.firestore.collection(`categories/${topic}/questions`, ref => ref.startAfter(this.lastVisible).limit(1))
-      .snapshotChanges()
-      .pipe(
-        map(actions => {
-          if (actions.length > 0) {
-            const data = actions[0].payload.doc.data() as Question;
-            this.lastVisible = actions[0].payload.doc;
-            return data; // Retourne directement data qui contient déjà un id
-          } else {
-            this.lastVisible = null;
-            return null;
-          }
-        }),
-        catchError(error => {
-          console.error('Error fetching next question:', error);
-          return of(null);
-        })
-      );
   }
-  
+
+  private shuffleArray(array: any[]): any[] {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
 }

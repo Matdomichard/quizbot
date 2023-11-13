@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
   }
 
   onNextQuestionClicked() {
-    this.questionService.getNextQuestion(this.currentTopic).subscribe((question: Question | null) => {
+    this.questionService.getNextQuestion().subscribe((question: Question | null) => {
       if (question) {
         this.currentQuestion = question;
         this.isCorrect = null; // Réinitialiser l'état de la réponse

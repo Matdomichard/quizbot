@@ -1,17 +1,27 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { FirestoreService } from '../services/firestore-service.service'
+
 
 @Component({
   selector: 'app-subject-selector',
   templateUrl: './subject-selector.component.html',
   styleUrls: ['./subject-selector.component.css']
 })
-export class SubjectSelectorComponent {
-  subjects = ['Entretien Java Facile','Entretien Java Intermédiaire','Entretien Java Difficile']; 
+export class SubjectSelectorComponent implements OnInit {
+  subjects: string[] = []; 
   selectedSubject!: string;
 
   @Output() subjectSelected = new EventEmitter<string>();
 
-  constructor() {}
+  constructor(private firestoreService: FirestoreService) {}
+
+  ngOnInit() {
+    this.firestoreService.getSubjects().subscribe(subjects => {
+      console.log(subjects); // Ajoutez ceci pour déboguer
+      this.subjects = subjects;
+    });
+  }
+  
 
   onSubjectChange(target: EventTarget | null): void {
     if (target instanceof HTMLSelectElement) {
