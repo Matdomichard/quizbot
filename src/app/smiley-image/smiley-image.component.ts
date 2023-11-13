@@ -1,22 +1,41 @@
 // app-image-smiley.component.ts
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-smiley-image',
   templateUrl: './smiley-image.component.html',
   styleUrls: ['./smiley-image.component.css']
 })
-export class SmileyImageComponent {
-  @Input() feedback!: 'correct' | 'incorrect';
+export class SmileyImageComponent implements OnChanges {
+  @Input() feedback!: 'correct' | 'incorrect' | 'neutre';
+  currentImageUrl: string = '/assets/img/neutral.png'; // Image par défaut
 
-  getImageUrl() {
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.feedback) {
+      this.updateImage();
+    }
+  }
+
+  updateImage() {
     switch (this.feedback) {
       case 'correct':
-        return '/assets/img/happy.png'; 
+        this.currentImageUrl = '/assets/img/happy.png';
+        break;
       case 'incorrect':
-        return '/assets/img/sad.png'; 
+        this.currentImageUrl = '/assets/img/sad.png';
+        break;
       default:
-        return '/assets/img/neutral.png';
+        this.currentImageUrl = '/assets/img/neutral.png';
+    }
+
+    if (this.feedback !== 'neutre') {
+      setTimeout(() => {
+        this.currentImageUrl = '/assets/img/neutral.png';
+      }, 1000); // Revenir à l'image neutre après 3 secondes
+    }
   }
-}
+
+  getImageUrl() {
+    return this.currentImageUrl;
+  }
 }

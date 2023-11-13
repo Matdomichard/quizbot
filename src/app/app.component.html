@@ -2,7 +2,7 @@
 <div class="app-container">
 
   <!-- Smiley Image Component -->
-  <app-smiley-image></app-smiley-image>
+  <app-smiley-image [feedback]="getFeedbackForSmiley()"></app-smiley-image>
   
   <!-- Subject Selector Component -->
   <app-subject-selector (subjectSelected)="onSubjectSelected($event)"></app-subject-selector>

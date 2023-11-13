@@ -59,4 +59,11 @@ export class AppComponent implements OnInit {
       this.feedbackMessage = "Erreur : Question non disponible.";
     }
   }
+
+  getFeedbackForSmiley(): 'correct' | 'incorrect' | 'neutre' {
+    if (this.isCorrect === null) {
+      return 'neutre';
+    }
+    return this.isCorrect ? 'correct' : 'incorrect';
+  }
 }
